@@ -1,0 +1,18 @@
+NOMBRE                        TIPO                VALOR                         LONGITUD
+======================================================================================================
+aaa                           ENTERO                                            0    
+berta                         CADENA                                            0    
+b                             REAL                                              0    
+var1                          ENTERO                                            0    
+a                             ENTERO                                            0    
+c                             ENTERO                                            0    
+d                             ENTERO                                            0    
+e                             REAL                                              0    
+cont                          REAL                                              0    
+pepp                          CADENA                                            0    
+jdf                           ENTERO                                            0    
+Q                             ENTERO                                            0    
+x                             CADENA                                            0    
+valorentero                   ENTERO                                            0    
+_Programa LYC                 CTE_STRING          Programa LYC                  12   
+_980                          CTE_INT             980                           0    

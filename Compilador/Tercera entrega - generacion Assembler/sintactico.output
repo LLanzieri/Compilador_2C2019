@@ -1,0 +1,2778 @@
+Terminals unused in grammar
+
+   COMENTARIOS
+   COMENTARIOS_ANIDADOS
+
+
+Gramática
+
+    0 $accept: start_programa $end
+
+    1 start_programa: programa
+
+    2 programa: bloque_declaracion bloque_programa
+
+    3 bloque_declaracion: VAR lista_definiciones ENDVAR
+
+    4 lista_definiciones: lista_definiciones definicion
+    5                   | definicion
+
+    6 definicion: CORCHETE_ABIERTO lista_tipo_dato CORCHETE_CERRADO DOS_PUNTOS CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO
+
+    7 lista_tipo_dato: lista_tipo_dato COMA tipo_dato
+    8                | tipo_dato
+
+    9 tipo_dato: TIPO_ENTERO
+   10          | TIPO_REAL
+   11          | TIPO_CADENA
+
+   12 lista_ids: lista_ids COMA ID
+   13          | ID
+
+   14 bloque_programa: bloque_programa sentencia
+   15                | sentencia
+
+   16 sentencia: asignacion
+   17          | bloque_condicional
+   18          | asignacion_multiple
+   19          | bloque_iteracion
+   20          | entrada_datos
+   21          | salida_datos
+
+   22 entrada_datos: READ ID
+
+   23 salida_datos: PRINT CADENA
+   24             | PRINT ID
+
+   25 $@1: /* vacío */
+
+   26 bloque_iteracion: REPEAT $@1 bloque_programa UNTIL condicion
+
+   27 $@2: /* vacío */
+
+   28 asignacion: ID $@2 OPERADOR_ASIGNACION expresion PUNTO_Y_COMA
+
+   29 $@3: /* vacío */
+
+   30 asignacion: ID $@3 OPERADOR_ASIG_STRING CADENA PUNTO_Y_COMA
+
+   31 expresion: expresion OPERACION_SUMA termino
+   32          | expresion OPERACION_RESTA termino
+   33          | termino
+
+   34 termino: termino OPERACION_MULTIPLICACION factor
+   35        | termino OPERACION_DIVISION factor
+   36        | factor
+
+   37 factor: ID
+   38       | ENTERO
+   39       | REAL
+   40       | PARENTESIS_ABIERTO expresion PARENTESIS_CERRADO
+   41       | filtro
+
+   42 bloque_condicional: bloque_if
+
+   43 $@4: /* vacío */
+
+   44 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@4 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+
+   45 $@5: /* vacío */
+
+   46 $@6: /* vacío */
+
+   47 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@5 OPERADOR_AND comparacion $@6 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+
+   48 $@7: /* vacío */
+
+   49 $@8: /* vacío */
+
+   50 $@9: /* vacío */
+
+   51 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@7 OPERADOR_OR comparacion $@8 PARENTESIS_CERRADO $@9 bloque_programa OPERADOR_ENDIF
+
+   52 $@10: /* vacío */
+
+   53 $@11: /* vacío */
+
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@10 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@11 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+   55 $@12: /* vacío */
+
+   56 $@13: /* vacío */
+
+   57 $@14: /* vacío */
+
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+   59 $@15: /* vacío */
+
+   60 $@16: /* vacío */
+
+   61 $@17: /* vacío */
+
+   62 $@18: /* vacío */
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+   64 condicion: PARENTESIS_ABIERTO comparacion PARENTESIS_CERRADO
+   65          | PARENTESIS_ABIERTO comparacion OPERADOR_AND comparacion PARENTESIS_CERRADO
+   66          | PARENTESIS_ABIERTO comparacion OPERADOR_OR comparacion PARENTESIS_CERRADO
+   67          | PARENTESIS_ABIERTO OPERADOR_NOT PARENTESIS_ABIERTO condicion PARENTESIS_CERRADO PARENTESIS_CERRADO
+   68          | PARENTESIS_ABIERTO OPERADOR_NOT PARENTESIS_ABIERTO comparacion PARENTESIS_CERRADO PARENTESIS_CERRADO
+
+   69 comparacion: expresion OPERADOR_MAYOR_A expresion
+   70            | expresion OPERADOR_MENOR_A expresion
+   71            | expresion OPERADOR_MAYOR_O_IGUAL_A expresion
+   72            | expresion OPERADOR_MENOR_O_IGUAL_A expresion
+   73            | expresion OPERADOR_IGUAL_A expresion
+   74            | expresion OPERADOR_DISTINTO_A expresion
+
+   75 filtro: FILTER PARENTESIS_ABIERTO condicion_filter COMA CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO PARENTESIS_CERRADO
+
+   76 condicion_filter: comparacion_filter OPERADOR_AND comparacion_filter
+   77                 | comparacion_filter OPERADOR_OR comparacion_filter
+   78                 | OPERADOR_NOT PARENTESIS_ABIERTO comparacion_filter PARENTESIS_CERRADO
+   79                 | comparacion_filter
+
+   80 comparacion_filter: GUION_BAJO OPERADOR_MAYOR_A expresion_numerica
+   81                   | GUION_BAJO OPERADOR_MENOR_A expresion_numerica
+   82                   | GUION_BAJO OPERADOR_MAYOR_O_IGUAL_A expresion_numerica
+   83                   | GUION_BAJO OPERADOR_MENOR_O_IGUAL_A expresion_numerica
+   84                   | GUION_BAJO OPERADOR_IGUAL_A expresion_numerica
+   85                   | GUION_BAJO OPERADOR_DISTINTO_A expresion_numerica
+
+   86 asignacion_multiple: CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO OPERADOR_ASIGNACION CORCHETE_ABIERTO lista_expresiones CORCHETE_CERRADO
+
+   87 lista_expresiones: lista_expresiones COMA expresion_numerica
+   88                  | expresion_numerica
+
+   89 expresion_numerica: expresion_numerica OPERACION_SUMA termino_numerico
+   90                   | expresion_numerica OPERACION_RESTA termino_numerico
+   91                   | termino_numerico
+
+   92 termino_numerico: termino_numerico OPERACION_MULTIPLICACION factor_numerico
+   93                 | termino_numerico OPERACION_DIVISION factor_numerico
+   94                 | factor_numerico
+
+   95 factor_numerico: ID
+   96                | ENTERO
+   97                | REAL
+   98                | PARENTESIS_ABIERTO expresion_numerica PARENTESIS_CERRADO
+   99                | filtro
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+error (256)
+COMENTARIOS (258)
+COMENTARIOS_ANIDADOS (259)
+REPEAT (260) 26
+UNTIL (261) 26
+OPERACION_SUMA (262) 31 89
+OPERACION_RESTA (263) 32 90
+OPERACION_MULTIPLICACION (264) 34 92
+OPERACION_DIVISION (265) 35 93
+ID (266) 12 13 22 24 28 30 37 95
+ENTERO (267) 38 96
+REAL (268) 39 97
+PARENTESIS_ABIERTO (269) 40 44 47 51 54 58 63 64 65 66 67 68 75 78
+    98
+PARENTESIS_CERRADO (270) 40 44 47 51 54 58 63 64 65 66 67 68 75 78
+    98
+COMA (271) 7 12 75 87
+OPERADOR_ASIGNACION (272) 28 86
+CADENA (273) 23 30
+READ (274) 22
+PRINT (275) 23 24
+OPERADOR_IF (276) 44 47 51 54 58 63
+OPERADOR_THEN (277) 54 58 63
+OPERADOR_ELSE (278) 54 58 63
+OPERADOR_ENDIF (279) 44 47 51 54 58 63
+OPERADOR_AND (280) 47 58 65 76
+OPERADOR_OR (281) 51 63 66 77
+OPERADOR_NOT (282) 67 68 78
+OPERADOR_MAYOR_A (283) 69 80
+OPERADOR_MENOR_A (284) 70 81
+OPERADOR_MAYOR_O_IGUAL_A (285) 71 82
+OPERADOR_MENOR_O_IGUAL_A (286) 72 83
+OPERADOR_IGUAL_A (287) 73 84
+OPERADOR_DISTINTO_A (288) 74 85
+VAR (289) 3
+ENDVAR (290) 3
+DOS_PUNTOS (291) 6
+PUNTO_Y_COMA (292) 28 30
+TIPO_ENTERO (293) 9
+TIPO_REAL (294) 10
+TIPO_CADENA (295) 11
+CORCHETE_ABIERTO (296) 6 75 86
+CORCHETE_CERRADO (297) 6 75 86
+FILTER (298) 75
+GUION_BAJO (299) 80 81 82 83 84 85
+OPERADOR_ASIG_STRING (300) 30
+
+
+No terminales con las reglas donde aparecen
+
+$accept (46)
+    en la izquierda: 0
+start_programa (47)
+    en la izquierda: 1, en la derecha: 0
+programa (48)
+    en la izquierda: 2, en la derecha: 1
+bloque_declaracion (49)
+    en la izquierda: 3, en la derecha: 2
+lista_definiciones (50)
+    en la izquierda: 4 5, en la derecha: 3 4
+definicion (51)
+    en la izquierda: 6, en la derecha: 4 5
+lista_tipo_dato (52)
+    en la izquierda: 7 8, en la derecha: 6 7
+tipo_dato (53)
+    en la izquierda: 9 10 11, en la derecha: 7 8
+lista_ids (54)
+    en la izquierda: 12 13, en la derecha: 6 12 75 86
+bloque_programa (55)
+    en la izquierda: 14 15, en la derecha: 2 14 26 44 47 51 54 58 63
+sentencia (56)
+    en la izquierda: 16 17 18 19 20 21, en la derecha: 14 15
+entrada_datos (57)
+    en la izquierda: 22, en la derecha: 20
+salida_datos (58)
+    en la izquierda: 23 24, en la derecha: 21
+bloque_iteracion (59)
+    en la izquierda: 26, en la derecha: 19
+$@1 (60)
+    en la izquierda: 25, en la derecha: 26
+asignacion (61)
+    en la izquierda: 28 30, en la derecha: 16
+$@2 (62)
+    en la izquierda: 27, en la derecha: 28
+$@3 (63)
+    en la izquierda: 29, en la derecha: 30
+expresion (64)
+    en la izquierda: 31 32 33, en la derecha: 28 31 32 40 69 70 71
+    72 73 74
+termino (65)
+    en la izquierda: 34 35 36, en la derecha: 31 32 33 34 35
+factor (66)
+    en la izquierda: 37 38 39 40 41, en la derecha: 34 35 36
+bloque_condicional (67)
+    en la izquierda: 42, en la derecha: 17
+bloque_if (68)
+    en la izquierda: 44 47 51 54 58 63, en la derecha: 42
+$@4 (69)
+    en la izquierda: 43, en la derecha: 44
+$@5 (70)
+    en la izquierda: 45, en la derecha: 47
+$@6 (71)
+    en la izquierda: 46, en la derecha: 47
+$@7 (72)
+    en la izquierda: 48, en la derecha: 51
+$@8 (73)
+    en la izquierda: 49, en la derecha: 51
+$@9 (74)
+    en la izquierda: 50, en la derecha: 51
+$@10 (75)
+    en la izquierda: 52, en la derecha: 54
+$@11 (76)
+    en la izquierda: 53, en la derecha: 54
+$@12 (77)
+    en la izquierda: 55, en la derecha: 58
+$@13 (78)
+    en la izquierda: 56, en la derecha: 58
+$@14 (79)
+    en la izquierda: 57, en la derecha: 58
+$@15 (80)
+    en la izquierda: 59, en la derecha: 63
+$@16 (81)
+    en la izquierda: 60, en la derecha: 63
+$@17 (82)
+    en la izquierda: 61, en la derecha: 63
+$@18 (83)
+    en la izquierda: 62, en la derecha: 63
+condicion (84)
+    en la izquierda: 64 65 66 67 68, en la derecha: 26 67
+comparacion (85)
+    en la izquierda: 69 70 71 72 73 74, en la derecha: 44 47 51 54
+    58 63 64 65 66 68
+filtro (86)
+    en la izquierda: 75, en la derecha: 41 99
+condicion_filter (87)
+    en la izquierda: 76 77 78 79, en la derecha: 75
+comparacion_filter (88)
+    en la izquierda: 80 81 82 83 84 85, en la derecha: 76 77 78 79
+asignacion_multiple (89)
+    en la izquierda: 86, en la derecha: 18
+lista_expresiones (90)
+    en la izquierda: 87 88, en la derecha: 86 87
+expresion_numerica (91)
+    en la izquierda: 89 90 91, en la derecha: 80 81 82 83 84 85 87
+    88 89 90 98
+termino_numerico (92)
+    en la izquierda: 92 93 94, en la derecha: 89 90 91 92 93
+factor_numerico (93)
+    en la izquierda: 95 96 97 98 99, en la derecha: 92 93 94
+
+
+estado 0
+
+    0 $accept: . start_programa $end
+
+    VAR  desplazar e ir al estado 1
+
+    start_programa      ir al estado 2
+    programa            ir al estado 3
+    bloque_declaracion  ir al estado 4
+
+
+estado 1
+
+    3 bloque_declaracion: VAR . lista_definiciones ENDVAR
+
+    CORCHETE_ABIERTO  desplazar e ir al estado 5
+
+    lista_definiciones  ir al estado 6
+    definicion          ir al estado 7
+
+
+estado 2
+
+    0 $accept: start_programa . $end
+
+    $end  desplazar e ir al estado 8
+
+
+estado 3
+
+    1 start_programa: programa .
+
+    $default  reduce usando la regla 1 (start_programa)
+
+
+estado 4
+
+    2 programa: bloque_declaracion . bloque_programa
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 15
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 5
+
+    6 definicion: CORCHETE_ABIERTO . lista_tipo_dato CORCHETE_CERRADO DOS_PUNTOS CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO
+
+    TIPO_ENTERO  desplazar e ir al estado 24
+    TIPO_REAL    desplazar e ir al estado 25
+    TIPO_CADENA  desplazar e ir al estado 26
+
+    lista_tipo_dato  ir al estado 27
+    tipo_dato        ir al estado 28
+
+
+estado 6
+
+    3 bloque_declaracion: VAR lista_definiciones . ENDVAR
+    4 lista_definiciones: lista_definiciones . definicion
+
+    ENDVAR            desplazar e ir al estado 29
+    CORCHETE_ABIERTO  desplazar e ir al estado 5
+
+    definicion  ir al estado 30
+
+
+estado 7
+
+    5 lista_definiciones: definicion .
+
+    $default  reduce usando la regla 5 (lista_definiciones)
+
+
+estado 8
+
+    0 $accept: start_programa $end .
+
+    $default  aceptar
+
+
+estado 9
+
+   26 bloque_iteracion: REPEAT . $@1 bloque_programa UNTIL condicion
+
+    $default  reduce usando la regla 25 ($@1)
+
+    $@1  ir al estado 31
+
+
+estado 10
+
+   28 asignacion: ID . $@2 OPERADOR_ASIGNACION expresion PUNTO_Y_COMA
+   30           | ID . $@3 OPERADOR_ASIG_STRING CADENA PUNTO_Y_COMA
+
+    OPERADOR_ASIG_STRING  reduce usando la regla 29 ($@3)
+    $default              reduce usando la regla 27 ($@2)
+
+    $@2  ir al estado 32
+    $@3  ir al estado 33
+
+
+estado 11
+
+   22 entrada_datos: READ . ID
+
+    ID  desplazar e ir al estado 34
+
+
+estado 12
+
+   23 salida_datos: PRINT . CADENA
+   24             | PRINT . ID
+
+    ID      desplazar e ir al estado 35
+    CADENA  desplazar e ir al estado 36
+
+
+estado 13
+
+   44 bloque_if: OPERADOR_IF . PARENTESIS_ABIERTO comparacion $@4 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+   47          | OPERADOR_IF . PARENTESIS_ABIERTO comparacion $@5 OPERADOR_AND comparacion $@6 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+   51          | OPERADOR_IF . PARENTESIS_ABIERTO comparacion $@7 OPERADOR_OR comparacion $@8 PARENTESIS_CERRADO $@9 bloque_programa OPERADOR_ENDIF
+   54          | OPERADOR_IF . OPERADOR_IF PARENTESIS_ABIERTO comparacion $@10 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@11 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+   58          | OPERADOR_IF . OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+   63          | OPERADOR_IF . OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    PARENTESIS_ABIERTO  desplazar e ir al estado 37
+    OPERADOR_IF         desplazar e ir al estado 38
+
+
+estado 14
+
+   86 asignacion_multiple: CORCHETE_ABIERTO . lista_ids CORCHETE_CERRADO OPERADOR_ASIGNACION CORCHETE_ABIERTO lista_expresiones CORCHETE_CERRADO
+
+    ID  desplazar e ir al estado 39
+
+    lista_ids  ir al estado 40
+
+
+estado 15
+
+    2 programa: bloque_declaracion bloque_programa .
+   14 bloque_programa: bloque_programa . sentencia
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    $default  reduce usando la regla 2 (programa)
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 16
+
+   15 bloque_programa: sentencia .
+
+    $default  reduce usando la regla 15 (bloque_programa)
+
+
+estado 17
+
+   20 sentencia: entrada_datos .
+
+    $default  reduce usando la regla 20 (sentencia)
+
+
+estado 18
+
+   21 sentencia: salida_datos .
+
+    $default  reduce usando la regla 21 (sentencia)
+
+
+estado 19
+
+   19 sentencia: bloque_iteracion .
+
+    $default  reduce usando la regla 19 (sentencia)
+
+
+estado 20
+
+   16 sentencia: asignacion .
+
+    $default  reduce usando la regla 16 (sentencia)
+
+
+estado 21
+
+   17 sentencia: bloque_condicional .
+
+    $default  reduce usando la regla 17 (sentencia)
+
+
+estado 22
+
+   42 bloque_condicional: bloque_if .
+
+    $default  reduce usando la regla 42 (bloque_condicional)
+
+
+estado 23
+
+   18 sentencia: asignacion_multiple .
+
+    $default  reduce usando la regla 18 (sentencia)
+
+
+estado 24
+
+    9 tipo_dato: TIPO_ENTERO .
+
+    $default  reduce usando la regla 9 (tipo_dato)
+
+
+estado 25
+
+   10 tipo_dato: TIPO_REAL .
+
+    $default  reduce usando la regla 10 (tipo_dato)
+
+
+estado 26
+
+   11 tipo_dato: TIPO_CADENA .
+
+    $default  reduce usando la regla 11 (tipo_dato)
+
+
+estado 27
+
+    6 definicion: CORCHETE_ABIERTO lista_tipo_dato . CORCHETE_CERRADO DOS_PUNTOS CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO
+    7 lista_tipo_dato: lista_tipo_dato . COMA tipo_dato
+
+    COMA              desplazar e ir al estado 42
+    CORCHETE_CERRADO  desplazar e ir al estado 43
+
+
+estado 28
+
+    8 lista_tipo_dato: tipo_dato .
+
+    $default  reduce usando la regla 8 (lista_tipo_dato)
+
+
+estado 29
+
+    3 bloque_declaracion: VAR lista_definiciones ENDVAR .
+
+    $default  reduce usando la regla 3 (bloque_declaracion)
+
+
+estado 30
+
+    4 lista_definiciones: lista_definiciones definicion .
+
+    $default  reduce usando la regla 4 (lista_definiciones)
+
+
+estado 31
+
+   26 bloque_iteracion: REPEAT $@1 . bloque_programa UNTIL condicion
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 44
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 32
+
+   28 asignacion: ID $@2 . OPERADOR_ASIGNACION expresion PUNTO_Y_COMA
+
+    OPERADOR_ASIGNACION  desplazar e ir al estado 45
+
+
+estado 33
+
+   30 asignacion: ID $@3 . OPERADOR_ASIG_STRING CADENA PUNTO_Y_COMA
+
+    OPERADOR_ASIG_STRING  desplazar e ir al estado 46
+
+
+estado 34
+
+   22 entrada_datos: READ ID .
+
+    $default  reduce usando la regla 22 (entrada_datos)
+
+
+estado 35
+
+   24 salida_datos: PRINT ID .
+
+    $default  reduce usando la regla 24 (salida_datos)
+
+
+estado 36
+
+   23 salida_datos: PRINT CADENA .
+
+    $default  reduce usando la regla 23 (salida_datos)
+
+
+estado 37
+
+   44 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO . comparacion $@4 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+   47          | OPERADOR_IF PARENTESIS_ABIERTO . comparacion $@5 OPERADOR_AND comparacion $@6 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+   51          | OPERADOR_IF PARENTESIS_ABIERTO . comparacion $@7 OPERADOR_OR comparacion $@8 PARENTESIS_CERRADO $@9 bloque_programa OPERADOR_ENDIF
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 52
+    termino      ir al estado 53
+    factor       ir al estado 54
+    comparacion  ir al estado 55
+    filtro       ir al estado 56
+
+
+estado 38
+
+   54 bloque_if: OPERADOR_IF OPERADOR_IF . PARENTESIS_ABIERTO comparacion $@10 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@11 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+   58          | OPERADOR_IF OPERADOR_IF . PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+   63          | OPERADOR_IF OPERADOR_IF . PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    PARENTESIS_ABIERTO  desplazar e ir al estado 57
+
+
+estado 39
+
+   13 lista_ids: ID .
+
+    $default  reduce usando la regla 13 (lista_ids)
+
+
+estado 40
+
+   12 lista_ids: lista_ids . COMA ID
+   86 asignacion_multiple: CORCHETE_ABIERTO lista_ids . CORCHETE_CERRADO OPERADOR_ASIGNACION CORCHETE_ABIERTO lista_expresiones CORCHETE_CERRADO
+
+    COMA              desplazar e ir al estado 58
+    CORCHETE_CERRADO  desplazar e ir al estado 59
+
+
+estado 41
+
+   14 bloque_programa: bloque_programa sentencia .
+
+    $default  reduce usando la regla 14 (bloque_programa)
+
+
+estado 42
+
+    7 lista_tipo_dato: lista_tipo_dato COMA . tipo_dato
+
+    TIPO_ENTERO  desplazar e ir al estado 24
+    TIPO_REAL    desplazar e ir al estado 25
+    TIPO_CADENA  desplazar e ir al estado 26
+
+    tipo_dato  ir al estado 60
+
+
+estado 43
+
+    6 definicion: CORCHETE_ABIERTO lista_tipo_dato CORCHETE_CERRADO . DOS_PUNTOS CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO
+
+    DOS_PUNTOS  desplazar e ir al estado 61
+
+
+estado 44
+
+   14 bloque_programa: bloque_programa . sentencia
+   26 bloque_iteracion: REPEAT $@1 bloque_programa . UNTIL condicion
+
+    REPEAT            desplazar e ir al estado 9
+    UNTIL             desplazar e ir al estado 62
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 45
+
+   28 asignacion: ID $@2 OPERADOR_ASIGNACION . expresion PUNTO_Y_COMA
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion  ir al estado 63
+    termino    ir al estado 53
+    factor     ir al estado 54
+    filtro     ir al estado 56
+
+
+estado 46
+
+   30 asignacion: ID $@3 OPERADOR_ASIG_STRING . CADENA PUNTO_Y_COMA
+
+    CADENA  desplazar e ir al estado 64
+
+
+estado 47
+
+   37 factor: ID .
+
+    $default  reduce usando la regla 37 (factor)
+
+
+estado 48
+
+   38 factor: ENTERO .
+
+    $default  reduce usando la regla 38 (factor)
+
+
+estado 49
+
+   39 factor: REAL .
+
+    $default  reduce usando la regla 39 (factor)
+
+
+estado 50
+
+   40 factor: PARENTESIS_ABIERTO . expresion PARENTESIS_CERRADO
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion  ir al estado 65
+    termino    ir al estado 53
+    factor     ir al estado 54
+    filtro     ir al estado 56
+
+
+estado 51
+
+   75 filtro: FILTER . PARENTESIS_ABIERTO condicion_filter COMA CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO PARENTESIS_CERRADO
+
+    PARENTESIS_ABIERTO  desplazar e ir al estado 66
+
+
+estado 52
+
+   31 expresion: expresion . OPERACION_SUMA termino
+   32          | expresion . OPERACION_RESTA termino
+   69 comparacion: expresion . OPERADOR_MAYOR_A expresion
+   70            | expresion . OPERADOR_MENOR_A expresion
+   71            | expresion . OPERADOR_MAYOR_O_IGUAL_A expresion
+   72            | expresion . OPERADOR_MENOR_O_IGUAL_A expresion
+   73            | expresion . OPERADOR_IGUAL_A expresion
+   74            | expresion . OPERADOR_DISTINTO_A expresion
+
+    OPERACION_SUMA            desplazar e ir al estado 67
+    OPERACION_RESTA           desplazar e ir al estado 68
+    OPERADOR_MAYOR_A          desplazar e ir al estado 69
+    OPERADOR_MENOR_A          desplazar e ir al estado 70
+    OPERADOR_MAYOR_O_IGUAL_A  desplazar e ir al estado 71
+    OPERADOR_MENOR_O_IGUAL_A  desplazar e ir al estado 72
+    OPERADOR_IGUAL_A          desplazar e ir al estado 73
+    OPERADOR_DISTINTO_A       desplazar e ir al estado 74
+
+
+estado 53
+
+   33 expresion: termino .
+   34 termino: termino . OPERACION_MULTIPLICACION factor
+   35        | termino . OPERACION_DIVISION factor
+
+    OPERACION_MULTIPLICACION  desplazar e ir al estado 75
+    OPERACION_DIVISION        desplazar e ir al estado 76
+
+    $default  reduce usando la regla 33 (expresion)
+
+
+estado 54
+
+   36 termino: factor .
+
+    $default  reduce usando la regla 36 (termino)
+
+
+estado 55
+
+   44 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion . $@4 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+   47          | OPERADOR_IF PARENTESIS_ABIERTO comparacion . $@5 OPERADOR_AND comparacion $@6 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+   51          | OPERADOR_IF PARENTESIS_ABIERTO comparacion . $@7 OPERADOR_OR comparacion $@8 PARENTESIS_CERRADO $@9 bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_AND  reduce usando la regla 45 ($@5)
+    OPERADOR_OR   reduce usando la regla 48 ($@7)
+    $default      reduce usando la regla 43 ($@4)
+
+    $@4  ir al estado 77
+    $@5  ir al estado 78
+    $@7  ir al estado 79
+
+
+estado 56
+
+   41 factor: filtro .
+
+    $default  reduce usando la regla 41 (factor)
+
+
+estado 57
+
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO . comparacion $@10 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@11 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+   58          | OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO . comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+   63          | OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO . comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 52
+    termino      ir al estado 53
+    factor       ir al estado 54
+    comparacion  ir al estado 80
+    filtro       ir al estado 56
+
+
+estado 58
+
+   12 lista_ids: lista_ids COMA . ID
+
+    ID  desplazar e ir al estado 81
+
+
+estado 59
+
+   86 asignacion_multiple: CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO . OPERADOR_ASIGNACION CORCHETE_ABIERTO lista_expresiones CORCHETE_CERRADO
+
+    OPERADOR_ASIGNACION  desplazar e ir al estado 82
+
+
+estado 60
+
+    7 lista_tipo_dato: lista_tipo_dato COMA tipo_dato .
+
+    $default  reduce usando la regla 7 (lista_tipo_dato)
+
+
+estado 61
+
+    6 definicion: CORCHETE_ABIERTO lista_tipo_dato CORCHETE_CERRADO DOS_PUNTOS . CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO
+
+    CORCHETE_ABIERTO  desplazar e ir al estado 83
+
+
+estado 62
+
+   26 bloque_iteracion: REPEAT $@1 bloque_programa UNTIL . condicion
+
+    PARENTESIS_ABIERTO  desplazar e ir al estado 84
+
+    condicion  ir al estado 85
+
+
+estado 63
+
+   28 asignacion: ID $@2 OPERADOR_ASIGNACION expresion . PUNTO_Y_COMA
+   31 expresion: expresion . OPERACION_SUMA termino
+   32          | expresion . OPERACION_RESTA termino
+
+    OPERACION_SUMA   desplazar e ir al estado 67
+    OPERACION_RESTA  desplazar e ir al estado 68
+    PUNTO_Y_COMA     desplazar e ir al estado 86
+
+
+estado 64
+
+   30 asignacion: ID $@3 OPERADOR_ASIG_STRING CADENA . PUNTO_Y_COMA
+
+    PUNTO_Y_COMA  desplazar e ir al estado 87
+
+
+estado 65
+
+   31 expresion: expresion . OPERACION_SUMA termino
+   32          | expresion . OPERACION_RESTA termino
+   40 factor: PARENTESIS_ABIERTO expresion . PARENTESIS_CERRADO
+
+    OPERACION_SUMA      desplazar e ir al estado 67
+    OPERACION_RESTA     desplazar e ir al estado 68
+    PARENTESIS_CERRADO  desplazar e ir al estado 88
+
+
+estado 66
+
+   75 filtro: FILTER PARENTESIS_ABIERTO . condicion_filter COMA CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO PARENTESIS_CERRADO
+
+    OPERADOR_NOT  desplazar e ir al estado 89
+    GUION_BAJO    desplazar e ir al estado 90
+
+    condicion_filter    ir al estado 91
+    comparacion_filter  ir al estado 92
+
+
+estado 67
+
+   31 expresion: expresion OPERACION_SUMA . termino
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    termino  ir al estado 93
+    factor   ir al estado 54
+    filtro   ir al estado 56
+
+
+estado 68
+
+   32 expresion: expresion OPERACION_RESTA . termino
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    termino  ir al estado 94
+    factor   ir al estado 54
+    filtro   ir al estado 56
+
+
+estado 69
+
+   69 comparacion: expresion OPERADOR_MAYOR_A . expresion
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion  ir al estado 95
+    termino    ir al estado 53
+    factor     ir al estado 54
+    filtro     ir al estado 56
+
+
+estado 70
+
+   70 comparacion: expresion OPERADOR_MENOR_A . expresion
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion  ir al estado 96
+    termino    ir al estado 53
+    factor     ir al estado 54
+    filtro     ir al estado 56
+
+
+estado 71
+
+   71 comparacion: expresion OPERADOR_MAYOR_O_IGUAL_A . expresion
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion  ir al estado 97
+    termino    ir al estado 53
+    factor     ir al estado 54
+    filtro     ir al estado 56
+
+
+estado 72
+
+   72 comparacion: expresion OPERADOR_MENOR_O_IGUAL_A . expresion
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion  ir al estado 98
+    termino    ir al estado 53
+    factor     ir al estado 54
+    filtro     ir al estado 56
+
+
+estado 73
+
+   73 comparacion: expresion OPERADOR_IGUAL_A . expresion
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion  ir al estado 99
+    termino    ir al estado 53
+    factor     ir al estado 54
+    filtro     ir al estado 56
+
+
+estado 74
+
+   74 comparacion: expresion OPERADOR_DISTINTO_A . expresion
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion  ir al estado 100
+    termino    ir al estado 53
+    factor     ir al estado 54
+    filtro     ir al estado 56
+
+
+estado 75
+
+   34 termino: termino OPERACION_MULTIPLICACION . factor
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    factor  ir al estado 101
+    filtro  ir al estado 56
+
+
+estado 76
+
+   35 termino: termino OPERACION_DIVISION . factor
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    factor  ir al estado 102
+    filtro  ir al estado 56
+
+
+estado 77
+
+   44 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@4 . PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 103
+
+
+estado 78
+
+   47 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@5 . OPERADOR_AND comparacion $@6 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_AND  desplazar e ir al estado 104
+
+
+estado 79
+
+   51 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@7 . OPERADOR_OR comparacion $@8 PARENTESIS_CERRADO $@9 bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_OR  desplazar e ir al estado 105
+
+
+estado 80
+
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion . $@10 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@11 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+   58          | OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion . $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+   63          | OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion . $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_AND  reduce usando la regla 55 ($@12)
+    OPERADOR_OR   reduce usando la regla 59 ($@15)
+    $default      reduce usando la regla 52 ($@10)
+
+    $@10  ir al estado 106
+    $@12  ir al estado 107
+    $@15  ir al estado 108
+
+
+estado 81
+
+   12 lista_ids: lista_ids COMA ID .
+
+    $default  reduce usando la regla 12 (lista_ids)
+
+
+estado 82
+
+   86 asignacion_multiple: CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO OPERADOR_ASIGNACION . CORCHETE_ABIERTO lista_expresiones CORCHETE_CERRADO
+
+    CORCHETE_ABIERTO  desplazar e ir al estado 109
+
+
+estado 83
+
+    6 definicion: CORCHETE_ABIERTO lista_tipo_dato CORCHETE_CERRADO DOS_PUNTOS CORCHETE_ABIERTO . lista_ids CORCHETE_CERRADO
+
+    ID  desplazar e ir al estado 39
+
+    lista_ids  ir al estado 110
+
+
+estado 84
+
+   64 condicion: PARENTESIS_ABIERTO . comparacion PARENTESIS_CERRADO
+   65          | PARENTESIS_ABIERTO . comparacion OPERADOR_AND comparacion PARENTESIS_CERRADO
+   66          | PARENTESIS_ABIERTO . comparacion OPERADOR_OR comparacion PARENTESIS_CERRADO
+   67          | PARENTESIS_ABIERTO . OPERADOR_NOT PARENTESIS_ABIERTO condicion PARENTESIS_CERRADO PARENTESIS_CERRADO
+   68          | PARENTESIS_ABIERTO . OPERADOR_NOT PARENTESIS_ABIERTO comparacion PARENTESIS_CERRADO PARENTESIS_CERRADO
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    OPERADOR_NOT        desplazar e ir al estado 111
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 52
+    termino      ir al estado 53
+    factor       ir al estado 54
+    comparacion  ir al estado 112
+    filtro       ir al estado 56
+
+
+estado 85
+
+   26 bloque_iteracion: REPEAT $@1 bloque_programa UNTIL condicion .
+
+    $default  reduce usando la regla 26 (bloque_iteracion)
+
+
+estado 86
+
+   28 asignacion: ID $@2 OPERADOR_ASIGNACION expresion PUNTO_Y_COMA .
+
+    $default  reduce usando la regla 28 (asignacion)
+
+
+estado 87
+
+   30 asignacion: ID $@3 OPERADOR_ASIG_STRING CADENA PUNTO_Y_COMA .
+
+    $default  reduce usando la regla 30 (asignacion)
+
+
+estado 88
+
+   40 factor: PARENTESIS_ABIERTO expresion PARENTESIS_CERRADO .
+
+    $default  reduce usando la regla 40 (factor)
+
+
+estado 89
+
+   78 condicion_filter: OPERADOR_NOT . PARENTESIS_ABIERTO comparacion_filter PARENTESIS_CERRADO
+
+    PARENTESIS_ABIERTO  desplazar e ir al estado 113
+
+
+estado 90
+
+   80 comparacion_filter: GUION_BAJO . OPERADOR_MAYOR_A expresion_numerica
+   81                   | GUION_BAJO . OPERADOR_MENOR_A expresion_numerica
+   82                   | GUION_BAJO . OPERADOR_MAYOR_O_IGUAL_A expresion_numerica
+   83                   | GUION_BAJO . OPERADOR_MENOR_O_IGUAL_A expresion_numerica
+   84                   | GUION_BAJO . OPERADOR_IGUAL_A expresion_numerica
+   85                   | GUION_BAJO . OPERADOR_DISTINTO_A expresion_numerica
+
+    OPERADOR_MAYOR_A          desplazar e ir al estado 114
+    OPERADOR_MENOR_A          desplazar e ir al estado 115
+    OPERADOR_MAYOR_O_IGUAL_A  desplazar e ir al estado 116
+    OPERADOR_MENOR_O_IGUAL_A  desplazar e ir al estado 117
+    OPERADOR_IGUAL_A          desplazar e ir al estado 118
+    OPERADOR_DISTINTO_A       desplazar e ir al estado 119
+
+
+estado 91
+
+   75 filtro: FILTER PARENTESIS_ABIERTO condicion_filter . COMA CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO PARENTESIS_CERRADO
+
+    COMA  desplazar e ir al estado 120
+
+
+estado 92
+
+   76 condicion_filter: comparacion_filter . OPERADOR_AND comparacion_filter
+   77                 | comparacion_filter . OPERADOR_OR comparacion_filter
+   79                 | comparacion_filter .
+
+    OPERADOR_AND  desplazar e ir al estado 121
+    OPERADOR_OR   desplazar e ir al estado 122
+
+    $default  reduce usando la regla 79 (condicion_filter)
+
+
+estado 93
+
+   31 expresion: expresion OPERACION_SUMA termino .
+   34 termino: termino . OPERACION_MULTIPLICACION factor
+   35        | termino . OPERACION_DIVISION factor
+
+    OPERACION_MULTIPLICACION  desplazar e ir al estado 75
+    OPERACION_DIVISION        desplazar e ir al estado 76
+
+    $default  reduce usando la regla 31 (expresion)
+
+
+estado 94
+
+   32 expresion: expresion OPERACION_RESTA termino .
+   34 termino: termino . OPERACION_MULTIPLICACION factor
+   35        | termino . OPERACION_DIVISION factor
+
+    OPERACION_MULTIPLICACION  desplazar e ir al estado 75
+    OPERACION_DIVISION        desplazar e ir al estado 76
+
+    $default  reduce usando la regla 32 (expresion)
+
+
+estado 95
+
+   31 expresion: expresion . OPERACION_SUMA termino
+   32          | expresion . OPERACION_RESTA termino
+   69 comparacion: expresion OPERADOR_MAYOR_A expresion .
+
+    OPERACION_SUMA   desplazar e ir al estado 67
+    OPERACION_RESTA  desplazar e ir al estado 68
+
+    $default  reduce usando la regla 69 (comparacion)
+
+
+estado 96
+
+   31 expresion: expresion . OPERACION_SUMA termino
+   32          | expresion . OPERACION_RESTA termino
+   70 comparacion: expresion OPERADOR_MENOR_A expresion .
+
+    OPERACION_SUMA   desplazar e ir al estado 67
+    OPERACION_RESTA  desplazar e ir al estado 68
+
+    $default  reduce usando la regla 70 (comparacion)
+
+
+estado 97
+
+   31 expresion: expresion . OPERACION_SUMA termino
+   32          | expresion . OPERACION_RESTA termino
+   71 comparacion: expresion OPERADOR_MAYOR_O_IGUAL_A expresion .
+
+    OPERACION_SUMA   desplazar e ir al estado 67
+    OPERACION_RESTA  desplazar e ir al estado 68
+
+    $default  reduce usando la regla 71 (comparacion)
+
+
+estado 98
+
+   31 expresion: expresion . OPERACION_SUMA termino
+   32          | expresion . OPERACION_RESTA termino
+   72 comparacion: expresion OPERADOR_MENOR_O_IGUAL_A expresion .
+
+    OPERACION_SUMA   desplazar e ir al estado 67
+    OPERACION_RESTA  desplazar e ir al estado 68
+
+    $default  reduce usando la regla 72 (comparacion)
+
+
+estado 99
+
+   31 expresion: expresion . OPERACION_SUMA termino
+   32          | expresion . OPERACION_RESTA termino
+   73 comparacion: expresion OPERADOR_IGUAL_A expresion .
+
+    OPERACION_SUMA   desplazar e ir al estado 67
+    OPERACION_RESTA  desplazar e ir al estado 68
+
+    $default  reduce usando la regla 73 (comparacion)
+
+
+estado 100
+
+   31 expresion: expresion . OPERACION_SUMA termino
+   32          | expresion . OPERACION_RESTA termino
+   74 comparacion: expresion OPERADOR_DISTINTO_A expresion .
+
+    OPERACION_SUMA   desplazar e ir al estado 67
+    OPERACION_RESTA  desplazar e ir al estado 68
+
+    $default  reduce usando la regla 74 (comparacion)
+
+
+estado 101
+
+   34 termino: termino OPERACION_MULTIPLICACION factor .
+
+    $default  reduce usando la regla 34 (termino)
+
+
+estado 102
+
+   35 termino: termino OPERACION_DIVISION factor .
+
+    $default  reduce usando la regla 35 (termino)
+
+
+estado 103
+
+   44 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@4 PARENTESIS_CERRADO . bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 123
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 104
+
+   47 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@5 OPERADOR_AND . comparacion $@6 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 52
+    termino      ir al estado 53
+    factor       ir al estado 54
+    comparacion  ir al estado 124
+    filtro       ir al estado 56
+
+
+estado 105
+
+   51 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@7 OPERADOR_OR . comparacion $@8 PARENTESIS_CERRADO $@9 bloque_programa OPERADOR_ENDIF
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 52
+    termino      ir al estado 53
+    factor       ir al estado 54
+    comparacion  ir al estado 125
+    filtro       ir al estado 56
+
+
+estado 106
+
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@10 . PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@11 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 126
+
+
+estado 107
+
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 . OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_AND  desplazar e ir al estado 127
+
+
+estado 108
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 . OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_OR  desplazar e ir al estado 128
+
+
+estado 109
+
+   86 asignacion_multiple: CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO OPERADOR_ASIGNACION CORCHETE_ABIERTO . lista_expresiones CORCHETE_CERRADO
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro              ir al estado 133
+    lista_expresiones   ir al estado 134
+    expresion_numerica  ir al estado 135
+    termino_numerico    ir al estado 136
+    factor_numerico     ir al estado 137
+
+
+estado 110
+
+    6 definicion: CORCHETE_ABIERTO lista_tipo_dato CORCHETE_CERRADO DOS_PUNTOS CORCHETE_ABIERTO lista_ids . CORCHETE_CERRADO
+   12 lista_ids: lista_ids . COMA ID
+
+    COMA              desplazar e ir al estado 58
+    CORCHETE_CERRADO  desplazar e ir al estado 138
+
+
+estado 111
+
+   67 condicion: PARENTESIS_ABIERTO OPERADOR_NOT . PARENTESIS_ABIERTO condicion PARENTESIS_CERRADO PARENTESIS_CERRADO
+   68          | PARENTESIS_ABIERTO OPERADOR_NOT . PARENTESIS_ABIERTO comparacion PARENTESIS_CERRADO PARENTESIS_CERRADO
+
+    PARENTESIS_ABIERTO  desplazar e ir al estado 139
+
+
+estado 112
+
+   64 condicion: PARENTESIS_ABIERTO comparacion . PARENTESIS_CERRADO
+   65          | PARENTESIS_ABIERTO comparacion . OPERADOR_AND comparacion PARENTESIS_CERRADO
+   66          | PARENTESIS_ABIERTO comparacion . OPERADOR_OR comparacion PARENTESIS_CERRADO
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 140
+    OPERADOR_AND        desplazar e ir al estado 141
+    OPERADOR_OR         desplazar e ir al estado 142
+
+
+estado 113
+
+   78 condicion_filter: OPERADOR_NOT PARENTESIS_ABIERTO . comparacion_filter PARENTESIS_CERRADO
+
+    GUION_BAJO  desplazar e ir al estado 90
+
+    comparacion_filter  ir al estado 143
+
+
+estado 114
+
+   80 comparacion_filter: GUION_BAJO OPERADOR_MAYOR_A . expresion_numerica
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro              ir al estado 133
+    expresion_numerica  ir al estado 144
+    termino_numerico    ir al estado 136
+    factor_numerico     ir al estado 137
+
+
+estado 115
+
+   81 comparacion_filter: GUION_BAJO OPERADOR_MENOR_A . expresion_numerica
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro              ir al estado 133
+    expresion_numerica  ir al estado 145
+    termino_numerico    ir al estado 136
+    factor_numerico     ir al estado 137
+
+
+estado 116
+
+   82 comparacion_filter: GUION_BAJO OPERADOR_MAYOR_O_IGUAL_A . expresion_numerica
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro              ir al estado 133
+    expresion_numerica  ir al estado 146
+    termino_numerico    ir al estado 136
+    factor_numerico     ir al estado 137
+
+
+estado 117
+
+   83 comparacion_filter: GUION_BAJO OPERADOR_MENOR_O_IGUAL_A . expresion_numerica
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro              ir al estado 133
+    expresion_numerica  ir al estado 147
+    termino_numerico    ir al estado 136
+    factor_numerico     ir al estado 137
+
+
+estado 118
+
+   84 comparacion_filter: GUION_BAJO OPERADOR_IGUAL_A . expresion_numerica
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro              ir al estado 133
+    expresion_numerica  ir al estado 148
+    termino_numerico    ir al estado 136
+    factor_numerico     ir al estado 137
+
+
+estado 119
+
+   85 comparacion_filter: GUION_BAJO OPERADOR_DISTINTO_A . expresion_numerica
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro              ir al estado 133
+    expresion_numerica  ir al estado 149
+    termino_numerico    ir al estado 136
+    factor_numerico     ir al estado 137
+
+
+estado 120
+
+   75 filtro: FILTER PARENTESIS_ABIERTO condicion_filter COMA . CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO PARENTESIS_CERRADO
+
+    CORCHETE_ABIERTO  desplazar e ir al estado 150
+
+
+estado 121
+
+   76 condicion_filter: comparacion_filter OPERADOR_AND . comparacion_filter
+
+    GUION_BAJO  desplazar e ir al estado 90
+
+    comparacion_filter  ir al estado 151
+
+
+estado 122
+
+   77 condicion_filter: comparacion_filter OPERADOR_OR . comparacion_filter
+
+    GUION_BAJO  desplazar e ir al estado 90
+
+    comparacion_filter  ir al estado 152
+
+
+estado 123
+
+   14 bloque_programa: bloque_programa . sentencia
+   44 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@4 PARENTESIS_CERRADO bloque_programa . OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    OPERADOR_ENDIF    desplazar e ir al estado 153
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 124
+
+   47 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@5 OPERADOR_AND comparacion . $@6 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+
+    $default  reduce usando la regla 46 ($@6)
+
+    $@6  ir al estado 154
+
+
+estado 125
+
+   51 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@7 OPERADOR_OR comparacion . $@8 PARENTESIS_CERRADO $@9 bloque_programa OPERADOR_ENDIF
+
+    $default  reduce usando la regla 49 ($@8)
+
+    $@8  ir al estado 155
+
+
+estado 126
+
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@10 PARENTESIS_CERRADO . OPERADOR_THEN bloque_programa $@11 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_THEN  desplazar e ir al estado 156
+
+
+estado 127
+
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND . comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 52
+    termino      ir al estado 53
+    factor       ir al estado 54
+    comparacion  ir al estado 157
+    filtro       ir al estado 56
+
+
+estado 128
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR . comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 52
+    termino      ir al estado 53
+    factor       ir al estado 54
+    comparacion  ir al estado 158
+    filtro       ir al estado 56
+
+
+estado 129
+
+   95 factor_numerico: ID .
+
+    $default  reduce usando la regla 95 (factor_numerico)
+
+
+estado 130
+
+   96 factor_numerico: ENTERO .
+
+    $default  reduce usando la regla 96 (factor_numerico)
+
+
+estado 131
+
+   97 factor_numerico: REAL .
+
+    $default  reduce usando la regla 97 (factor_numerico)
+
+
+estado 132
+
+   98 factor_numerico: PARENTESIS_ABIERTO . expresion_numerica PARENTESIS_CERRADO
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro              ir al estado 133
+    expresion_numerica  ir al estado 159
+    termino_numerico    ir al estado 136
+    factor_numerico     ir al estado 137
+
+
+estado 133
+
+   99 factor_numerico: filtro .
+
+    $default  reduce usando la regla 99 (factor_numerico)
+
+
+estado 134
+
+   86 asignacion_multiple: CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO OPERADOR_ASIGNACION CORCHETE_ABIERTO lista_expresiones . CORCHETE_CERRADO
+   87 lista_expresiones: lista_expresiones . COMA expresion_numerica
+
+    COMA              desplazar e ir al estado 160
+    CORCHETE_CERRADO  desplazar e ir al estado 161
+
+
+estado 135
+
+   88 lista_expresiones: expresion_numerica .
+   89 expresion_numerica: expresion_numerica . OPERACION_SUMA termino_numerico
+   90                   | expresion_numerica . OPERACION_RESTA termino_numerico
+
+    OPERACION_SUMA   desplazar e ir al estado 162
+    OPERACION_RESTA  desplazar e ir al estado 163
+
+    $default  reduce usando la regla 88 (lista_expresiones)
+
+
+estado 136
+
+   91 expresion_numerica: termino_numerico .
+   92 termino_numerico: termino_numerico . OPERACION_MULTIPLICACION factor_numerico
+   93                 | termino_numerico . OPERACION_DIVISION factor_numerico
+
+    OPERACION_MULTIPLICACION  desplazar e ir al estado 164
+    OPERACION_DIVISION        desplazar e ir al estado 165
+
+    $default  reduce usando la regla 91 (expresion_numerica)
+
+
+estado 137
+
+   94 termino_numerico: factor_numerico .
+
+    $default  reduce usando la regla 94 (termino_numerico)
+
+
+estado 138
+
+    6 definicion: CORCHETE_ABIERTO lista_tipo_dato CORCHETE_CERRADO DOS_PUNTOS CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO .
+
+    $default  reduce usando la regla 6 (definicion)
+
+
+estado 139
+
+   67 condicion: PARENTESIS_ABIERTO OPERADOR_NOT PARENTESIS_ABIERTO . condicion PARENTESIS_CERRADO PARENTESIS_CERRADO
+   68          | PARENTESIS_ABIERTO OPERADOR_NOT PARENTESIS_ABIERTO . comparacion PARENTESIS_CERRADO PARENTESIS_CERRADO
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 166
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 52
+    termino      ir al estado 53
+    factor       ir al estado 54
+    condicion    ir al estado 167
+    comparacion  ir al estado 168
+    filtro       ir al estado 56
+
+
+estado 140
+
+   64 condicion: PARENTESIS_ABIERTO comparacion PARENTESIS_CERRADO .
+
+    $default  reduce usando la regla 64 (condicion)
+
+
+estado 141
+
+   65 condicion: PARENTESIS_ABIERTO comparacion OPERADOR_AND . comparacion PARENTESIS_CERRADO
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 52
+    termino      ir al estado 53
+    factor       ir al estado 54
+    comparacion  ir al estado 169
+    filtro       ir al estado 56
+
+
+estado 142
+
+   66 condicion: PARENTESIS_ABIERTO comparacion OPERADOR_OR . comparacion PARENTESIS_CERRADO
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 52
+    termino      ir al estado 53
+    factor       ir al estado 54
+    comparacion  ir al estado 170
+    filtro       ir al estado 56
+
+
+estado 143
+
+   78 condicion_filter: OPERADOR_NOT PARENTESIS_ABIERTO comparacion_filter . PARENTESIS_CERRADO
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 171
+
+
+estado 144
+
+   80 comparacion_filter: GUION_BAJO OPERADOR_MAYOR_A expresion_numerica .
+   89 expresion_numerica: expresion_numerica . OPERACION_SUMA termino_numerico
+   90                   | expresion_numerica . OPERACION_RESTA termino_numerico
+
+    OPERACION_SUMA   desplazar e ir al estado 162
+    OPERACION_RESTA  desplazar e ir al estado 163
+
+    $default  reduce usando la regla 80 (comparacion_filter)
+
+
+estado 145
+
+   81 comparacion_filter: GUION_BAJO OPERADOR_MENOR_A expresion_numerica .
+   89 expresion_numerica: expresion_numerica . OPERACION_SUMA termino_numerico
+   90                   | expresion_numerica . OPERACION_RESTA termino_numerico
+
+    OPERACION_SUMA   desplazar e ir al estado 162
+    OPERACION_RESTA  desplazar e ir al estado 163
+
+    $default  reduce usando la regla 81 (comparacion_filter)
+
+
+estado 146
+
+   82 comparacion_filter: GUION_BAJO OPERADOR_MAYOR_O_IGUAL_A expresion_numerica .
+   89 expresion_numerica: expresion_numerica . OPERACION_SUMA termino_numerico
+   90                   | expresion_numerica . OPERACION_RESTA termino_numerico
+
+    OPERACION_SUMA   desplazar e ir al estado 162
+    OPERACION_RESTA  desplazar e ir al estado 163
+
+    $default  reduce usando la regla 82 (comparacion_filter)
+
+
+estado 147
+
+   83 comparacion_filter: GUION_BAJO OPERADOR_MENOR_O_IGUAL_A expresion_numerica .
+   89 expresion_numerica: expresion_numerica . OPERACION_SUMA termino_numerico
+   90                   | expresion_numerica . OPERACION_RESTA termino_numerico
+
+    OPERACION_SUMA   desplazar e ir al estado 162
+    OPERACION_RESTA  desplazar e ir al estado 163
+
+    $default  reduce usando la regla 83 (comparacion_filter)
+
+
+estado 148
+
+   84 comparacion_filter: GUION_BAJO OPERADOR_IGUAL_A expresion_numerica .
+   89 expresion_numerica: expresion_numerica . OPERACION_SUMA termino_numerico
+   90                   | expresion_numerica . OPERACION_RESTA termino_numerico
+
+    OPERACION_SUMA   desplazar e ir al estado 162
+    OPERACION_RESTA  desplazar e ir al estado 163
+
+    $default  reduce usando la regla 84 (comparacion_filter)
+
+
+estado 149
+
+   85 comparacion_filter: GUION_BAJO OPERADOR_DISTINTO_A expresion_numerica .
+   89 expresion_numerica: expresion_numerica . OPERACION_SUMA termino_numerico
+   90                   | expresion_numerica . OPERACION_RESTA termino_numerico
+
+    OPERACION_SUMA   desplazar e ir al estado 162
+    OPERACION_RESTA  desplazar e ir al estado 163
+
+    $default  reduce usando la regla 85 (comparacion_filter)
+
+
+estado 150
+
+   75 filtro: FILTER PARENTESIS_ABIERTO condicion_filter COMA CORCHETE_ABIERTO . lista_ids CORCHETE_CERRADO PARENTESIS_CERRADO
+
+    ID  desplazar e ir al estado 39
+
+    lista_ids  ir al estado 172
+
+
+estado 151
+
+   76 condicion_filter: comparacion_filter OPERADOR_AND comparacion_filter .
+
+    $default  reduce usando la regla 76 (condicion_filter)
+
+
+estado 152
+
+   77 condicion_filter: comparacion_filter OPERADOR_OR comparacion_filter .
+
+    $default  reduce usando la regla 77 (condicion_filter)
+
+
+estado 153
+
+   44 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@4 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF .
+
+    $default  reduce usando la regla 44 (bloque_if)
+
+
+estado 154
+
+   47 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@5 OPERADOR_AND comparacion $@6 . PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 173
+
+
+estado 155
+
+   51 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@7 OPERADOR_OR comparacion $@8 . PARENTESIS_CERRADO $@9 bloque_programa OPERADOR_ENDIF
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 174
+
+
+estado 156
+
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@10 PARENTESIS_CERRADO OPERADOR_THEN . bloque_programa $@11 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 175
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 157
+
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion . $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    $default  reduce usando la regla 56 ($@13)
+
+    $@13  ir al estado 176
+
+
+estado 158
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion . $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    $default  reduce usando la regla 60 ($@16)
+
+    $@16  ir al estado 177
+
+
+estado 159
+
+   89 expresion_numerica: expresion_numerica . OPERACION_SUMA termino_numerico
+   90                   | expresion_numerica . OPERACION_RESTA termino_numerico
+   98 factor_numerico: PARENTESIS_ABIERTO expresion_numerica . PARENTESIS_CERRADO
+
+    OPERACION_SUMA      desplazar e ir al estado 162
+    OPERACION_RESTA     desplazar e ir al estado 163
+    PARENTESIS_CERRADO  desplazar e ir al estado 178
+
+
+estado 160
+
+   87 lista_expresiones: lista_expresiones COMA . expresion_numerica
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro              ir al estado 133
+    expresion_numerica  ir al estado 179
+    termino_numerico    ir al estado 136
+    factor_numerico     ir al estado 137
+
+
+estado 161
+
+   86 asignacion_multiple: CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO OPERADOR_ASIGNACION CORCHETE_ABIERTO lista_expresiones CORCHETE_CERRADO .
+
+    $default  reduce usando la regla 86 (asignacion_multiple)
+
+
+estado 162
+
+   89 expresion_numerica: expresion_numerica OPERACION_SUMA . termino_numerico
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro            ir al estado 133
+    termino_numerico  ir al estado 180
+    factor_numerico   ir al estado 137
+
+
+estado 163
+
+   90 expresion_numerica: expresion_numerica OPERACION_RESTA . termino_numerico
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro            ir al estado 133
+    termino_numerico  ir al estado 181
+    factor_numerico   ir al estado 137
+
+
+estado 164
+
+   92 termino_numerico: termino_numerico OPERACION_MULTIPLICACION . factor_numerico
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro           ir al estado 133
+    factor_numerico  ir al estado 182
+
+
+estado 165
+
+   93 termino_numerico: termino_numerico OPERACION_DIVISION . factor_numerico
+
+    ID                  desplazar e ir al estado 129
+    ENTERO              desplazar e ir al estado 130
+    REAL                desplazar e ir al estado 131
+    PARENTESIS_ABIERTO  desplazar e ir al estado 132
+    FILTER              desplazar e ir al estado 51
+
+    filtro           ir al estado 133
+    factor_numerico  ir al estado 183
+
+
+estado 166
+
+   40 factor: PARENTESIS_ABIERTO . expresion PARENTESIS_CERRADO
+   64 condicion: PARENTESIS_ABIERTO . comparacion PARENTESIS_CERRADO
+   65          | PARENTESIS_ABIERTO . comparacion OPERADOR_AND comparacion PARENTESIS_CERRADO
+   66          | PARENTESIS_ABIERTO . comparacion OPERADOR_OR comparacion PARENTESIS_CERRADO
+   67          | PARENTESIS_ABIERTO . OPERADOR_NOT PARENTESIS_ABIERTO condicion PARENTESIS_CERRADO PARENTESIS_CERRADO
+   68          | PARENTESIS_ABIERTO . OPERADOR_NOT PARENTESIS_ABIERTO comparacion PARENTESIS_CERRADO PARENTESIS_CERRADO
+
+    ID                  desplazar e ir al estado 47
+    ENTERO              desplazar e ir al estado 48
+    REAL                desplazar e ir al estado 49
+    PARENTESIS_ABIERTO  desplazar e ir al estado 50
+    OPERADOR_NOT        desplazar e ir al estado 111
+    FILTER              desplazar e ir al estado 51
+
+    expresion    ir al estado 184
+    termino      ir al estado 53
+    factor       ir al estado 54
+    comparacion  ir al estado 112
+    filtro       ir al estado 56
+
+
+estado 167
+
+   67 condicion: PARENTESIS_ABIERTO OPERADOR_NOT PARENTESIS_ABIERTO condicion . PARENTESIS_CERRADO PARENTESIS_CERRADO
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 185
+
+
+estado 168
+
+   68 condicion: PARENTESIS_ABIERTO OPERADOR_NOT PARENTESIS_ABIERTO comparacion . PARENTESIS_CERRADO PARENTESIS_CERRADO
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 186
+
+
+estado 169
+
+   65 condicion: PARENTESIS_ABIERTO comparacion OPERADOR_AND comparacion . PARENTESIS_CERRADO
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 187
+
+
+estado 170
+
+   66 condicion: PARENTESIS_ABIERTO comparacion OPERADOR_OR comparacion . PARENTESIS_CERRADO
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 188
+
+
+estado 171
+
+   78 condicion_filter: OPERADOR_NOT PARENTESIS_ABIERTO comparacion_filter PARENTESIS_CERRADO .
+
+    $default  reduce usando la regla 78 (condicion_filter)
+
+
+estado 172
+
+   12 lista_ids: lista_ids . COMA ID
+   75 filtro: FILTER PARENTESIS_ABIERTO condicion_filter COMA CORCHETE_ABIERTO lista_ids . CORCHETE_CERRADO PARENTESIS_CERRADO
+
+    COMA              desplazar e ir al estado 58
+    CORCHETE_CERRADO  desplazar e ir al estado 189
+
+
+estado 173
+
+   47 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@5 OPERADOR_AND comparacion $@6 PARENTESIS_CERRADO . bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 190
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 174
+
+   51 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@7 OPERADOR_OR comparacion $@8 PARENTESIS_CERRADO . $@9 bloque_programa OPERADOR_ENDIF
+
+    $default  reduce usando la regla 50 ($@9)
+
+    $@9  ir al estado 191
+
+
+estado 175
+
+   14 bloque_programa: bloque_programa . sentencia
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@10 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa . $@11 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    $default  reduce usando la regla 53 ($@11)
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    $@11                 ir al estado 192
+    asignacion_multiple  ir al estado 23
+
+
+estado 176
+
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 . PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 193
+
+
+estado 177
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 . PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 194
+
+
+estado 178
+
+   98 factor_numerico: PARENTESIS_ABIERTO expresion_numerica PARENTESIS_CERRADO .
+
+    $default  reduce usando la regla 98 (factor_numerico)
+
+
+estado 179
+
+   87 lista_expresiones: lista_expresiones COMA expresion_numerica .
+   89 expresion_numerica: expresion_numerica . OPERACION_SUMA termino_numerico
+   90                   | expresion_numerica . OPERACION_RESTA termino_numerico
+
+    OPERACION_SUMA   desplazar e ir al estado 162
+    OPERACION_RESTA  desplazar e ir al estado 163
+
+    $default  reduce usando la regla 87 (lista_expresiones)
+
+
+estado 180
+
+   89 expresion_numerica: expresion_numerica OPERACION_SUMA termino_numerico .
+   92 termino_numerico: termino_numerico . OPERACION_MULTIPLICACION factor_numerico
+   93                 | termino_numerico . OPERACION_DIVISION factor_numerico
+
+    OPERACION_MULTIPLICACION  desplazar e ir al estado 164
+    OPERACION_DIVISION        desplazar e ir al estado 165
+
+    $default  reduce usando la regla 89 (expresion_numerica)
+
+
+estado 181
+
+   90 expresion_numerica: expresion_numerica OPERACION_RESTA termino_numerico .
+   92 termino_numerico: termino_numerico . OPERACION_MULTIPLICACION factor_numerico
+   93                 | termino_numerico . OPERACION_DIVISION factor_numerico
+
+    OPERACION_MULTIPLICACION  desplazar e ir al estado 164
+    OPERACION_DIVISION        desplazar e ir al estado 165
+
+    $default  reduce usando la regla 90 (expresion_numerica)
+
+
+estado 182
+
+   92 termino_numerico: termino_numerico OPERACION_MULTIPLICACION factor_numerico .
+
+    $default  reduce usando la regla 92 (termino_numerico)
+
+
+estado 183
+
+   93 termino_numerico: termino_numerico OPERACION_DIVISION factor_numerico .
+
+    $default  reduce usando la regla 93 (termino_numerico)
+
+
+estado 184
+
+   31 expresion: expresion . OPERACION_SUMA termino
+   32          | expresion . OPERACION_RESTA termino
+   40 factor: PARENTESIS_ABIERTO expresion . PARENTESIS_CERRADO
+   69 comparacion: expresion . OPERADOR_MAYOR_A expresion
+   70            | expresion . OPERADOR_MENOR_A expresion
+   71            | expresion . OPERADOR_MAYOR_O_IGUAL_A expresion
+   72            | expresion . OPERADOR_MENOR_O_IGUAL_A expresion
+   73            | expresion . OPERADOR_IGUAL_A expresion
+   74            | expresion . OPERADOR_DISTINTO_A expresion
+
+    OPERACION_SUMA            desplazar e ir al estado 67
+    OPERACION_RESTA           desplazar e ir al estado 68
+    PARENTESIS_CERRADO        desplazar e ir al estado 88
+    OPERADOR_MAYOR_A          desplazar e ir al estado 69
+    OPERADOR_MENOR_A          desplazar e ir al estado 70
+    OPERADOR_MAYOR_O_IGUAL_A  desplazar e ir al estado 71
+    OPERADOR_MENOR_O_IGUAL_A  desplazar e ir al estado 72
+    OPERADOR_IGUAL_A          desplazar e ir al estado 73
+    OPERADOR_DISTINTO_A       desplazar e ir al estado 74
+
+
+estado 185
+
+   67 condicion: PARENTESIS_ABIERTO OPERADOR_NOT PARENTESIS_ABIERTO condicion PARENTESIS_CERRADO . PARENTESIS_CERRADO
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 195
+
+
+estado 186
+
+   68 condicion: PARENTESIS_ABIERTO OPERADOR_NOT PARENTESIS_ABIERTO comparacion PARENTESIS_CERRADO . PARENTESIS_CERRADO
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 196
+
+
+estado 187
+
+   65 condicion: PARENTESIS_ABIERTO comparacion OPERADOR_AND comparacion PARENTESIS_CERRADO .
+
+    $default  reduce usando la regla 65 (condicion)
+
+
+estado 188
+
+   66 condicion: PARENTESIS_ABIERTO comparacion OPERADOR_OR comparacion PARENTESIS_CERRADO .
+
+    $default  reduce usando la regla 66 (condicion)
+
+
+estado 189
+
+   75 filtro: FILTER PARENTESIS_ABIERTO condicion_filter COMA CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO . PARENTESIS_CERRADO
+
+    PARENTESIS_CERRADO  desplazar e ir al estado 197
+
+
+estado 190
+
+   14 bloque_programa: bloque_programa . sentencia
+   47 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@5 OPERADOR_AND comparacion $@6 PARENTESIS_CERRADO bloque_programa . OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    OPERADOR_ENDIF    desplazar e ir al estado 198
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 191
+
+   51 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@7 OPERADOR_OR comparacion $@8 PARENTESIS_CERRADO $@9 . bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 199
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 192
+
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@10 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@11 . OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_ELSE  desplazar e ir al estado 200
+
+
+estado 193
+
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO . OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_THEN  desplazar e ir al estado 201
+
+
+estado 194
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO . $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    $default  reduce usando la regla 61 ($@17)
+
+    $@17  ir al estado 202
+
+
+estado 195
+
+   67 condicion: PARENTESIS_ABIERTO OPERADOR_NOT PARENTESIS_ABIERTO condicion PARENTESIS_CERRADO PARENTESIS_CERRADO .
+
+    $default  reduce usando la regla 67 (condicion)
+
+
+estado 196
+
+   68 condicion: PARENTESIS_ABIERTO OPERADOR_NOT PARENTESIS_ABIERTO comparacion PARENTESIS_CERRADO PARENTESIS_CERRADO .
+
+    $default  reduce usando la regla 68 (condicion)
+
+
+estado 197
+
+   75 filtro: FILTER PARENTESIS_ABIERTO condicion_filter COMA CORCHETE_ABIERTO lista_ids CORCHETE_CERRADO PARENTESIS_CERRADO .
+
+    $default  reduce usando la regla 75 (filtro)
+
+
+estado 198
+
+   47 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@5 OPERADOR_AND comparacion $@6 PARENTESIS_CERRADO bloque_programa OPERADOR_ENDIF .
+
+    $default  reduce usando la regla 47 (bloque_if)
+
+
+estado 199
+
+   14 bloque_programa: bloque_programa . sentencia
+   51 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@7 OPERADOR_OR comparacion $@8 PARENTESIS_CERRADO $@9 bloque_programa . OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    OPERADOR_ENDIF    desplazar e ir al estado 203
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 200
+
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@10 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@11 OPERADOR_ELSE . bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 204
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 201
+
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN . bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 205
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 202
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 . OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_THEN  desplazar e ir al estado 206
+
+
+estado 203
+
+   51 bloque_if: OPERADOR_IF PARENTESIS_ABIERTO comparacion $@7 OPERADOR_OR comparacion $@8 PARENTESIS_CERRADO $@9 bloque_programa OPERADOR_ENDIF .
+
+    $default  reduce usando la regla 51 (bloque_if)
+
+
+estado 204
+
+   14 bloque_programa: bloque_programa . sentencia
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@10 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@11 OPERADOR_ELSE bloque_programa . OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    OPERADOR_ENDIF    desplazar e ir al estado 207
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 205
+
+   14 bloque_programa: bloque_programa . sentencia
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa . $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    $default  reduce usando la regla 57 ($@14)
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    $@14                 ir al estado 208
+    asignacion_multiple  ir al estado 23
+
+
+estado 206
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN . bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 209
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 207
+
+   54 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@10 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@11 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF .
+
+    $default  reduce usando la regla 54 (bloque_if)
+
+
+estado 208
+
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 . OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_ELSE  desplazar e ir al estado 210
+
+
+estado 209
+
+   14 bloque_programa: bloque_programa . sentencia
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa . $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    $default  reduce usando la regla 62 ($@18)
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    $@18                 ir al estado 211
+    asignacion_multiple  ir al estado 23
+
+
+estado 210
+
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE . bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 212
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 211
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 . OPERADOR_ELSE bloque_programa OPERADOR_ENDIF
+
+    OPERADOR_ELSE  desplazar e ir al estado 213
+
+
+estado 212
+
+   14 bloque_programa: bloque_programa . sentencia
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa . OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    OPERADOR_ENDIF    desplazar e ir al estado 214
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 213
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE . bloque_programa OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    bloque_programa      ir al estado 215
+    sentencia            ir al estado 16
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 214
+
+   58 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@12 OPERADOR_AND comparacion $@13 PARENTESIS_CERRADO OPERADOR_THEN bloque_programa $@14 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF .
+
+    $default  reduce usando la regla 58 (bloque_if)
+
+
+estado 215
+
+   14 bloque_programa: bloque_programa . sentencia
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa . OPERADOR_ENDIF
+
+    REPEAT            desplazar e ir al estado 9
+    ID                desplazar e ir al estado 10
+    READ              desplazar e ir al estado 11
+    PRINT             desplazar e ir al estado 12
+    OPERADOR_IF       desplazar e ir al estado 13
+    OPERADOR_ENDIF    desplazar e ir al estado 216
+    CORCHETE_ABIERTO  desplazar e ir al estado 14
+
+    sentencia            ir al estado 41
+    entrada_datos        ir al estado 17
+    salida_datos         ir al estado 18
+    bloque_iteracion     ir al estado 19
+    asignacion           ir al estado 20
+    bloque_condicional   ir al estado 21
+    bloque_if            ir al estado 22
+    asignacion_multiple  ir al estado 23
+
+
+estado 216
+
+   63 bloque_if: OPERADOR_IF OPERADOR_IF PARENTESIS_ABIERTO comparacion $@15 OPERADOR_OR comparacion $@16 PARENTESIS_CERRADO $@17 OPERADOR_THEN bloque_programa $@18 OPERADOR_ELSE bloque_programa OPERADOR_ENDIF .
+
+    $default  reduce usando la regla 63 (bloque_if)

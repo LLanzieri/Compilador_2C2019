@@ -1,0 +1,164 @@
+VAR
+[INT,FLOAT,INT,FLOAT]:[abbaa,berta]					--/Mas tipos de datos que variables/--
+[FLOAT,INT]:[b,var1]
+[INT]:[a]
+[INT,INT,FLOAT,FLOAT]:[c,d,e,cont]
+[INT,INT,FLOAT,FLOAT]:[c,d,e,cont]
+[STRING,INT]:[pepp,estoesunid,x,y,z]					--/Mas variables que tipos de datos/--
+[INT,INT,FLOAT,FLOAT]:[c,d,e,cont]				--/VARIABLES DUPLICADAS --/ COMENTARIO dentro de un comentario/--/--
+[INT]:[q]
+[FLOAT,INT]:[b,var1]
+[STRING]:[x]
+[INT]:[valorentero]
+ENDVAR
+
+
+q:=50;					--/ ASIGNACIONES SIMPLES/--
+c:=4+2;
+cont:=27.123456789;
+pepp:="Hola12";
+
+PRINT "valor_cont"				--/ PRINT /--
+PRINT cont
+
+var1:=1;									
+c:=3;
+d:=4;
+abbaa:=FILTER(_>3 ,[var1,c,d]);						--/ FILTER /--
+PRINT abbaa
+
+PRINT "FIN_FILTER_1"
+
+a:= 4+5*3;										--/ ASIGNACION CON EXPRESION /--
+PRINT a
+
+estoesunid:=(a-1)/3;
+PRINT estoesunid
+
+e:=1.3323;
+b:=3.4555;
+cont:=7.115;
+berta:=FILTER(_>3.0 AND _<=7.11 ,[e,b,cont]);			--/ FILTER CON AND /-- 
+PRINT berta
+
+PRINT "FIN_FILTER_2"
+e:=1.3323;
+b:=3.4555;
+cont:=7.115;
+berta:=FILTER(NOT(_==1.3323) ,[e,cont,b]);		--/ FILTER CON OR /--
+PRINT "valor_berta"
+PRINT berta
+
+PRINT "FIN_FILTER_3"
+
+e:=1.3323;
+b:=3.4555;
+cont:=7.115;
+berta:=FILTER(_>3.0 AND _<=3.3 ,[e,b,cont]);
+PRINT berta
+
+PRINT "FIN_FILTER_4"
+
+
+a:=5;
+estoesunid:=1;
+REPEAT								--/ REPEAT /--
+a:=a+1;
+PRINT "valor_a"
+PRINT a
+UNTIL (a==10)
+
+a:=5;
+PRINT "REPEAT_AND"
+REPEAT								--/ REPEAT CON AND /--
+a:=a+1;
+PRINT "valor_a"
+PRINT a
+UNTIL (a<10 AND estoesunid<10)
+
+a:=5;
+PRINT "REPEAT_OR"
+REPEAT								--/ REPEAT CON OR /--
+a:=a+1;
+PRINT "valor_a_Repeat"
+PRINT a
+UNTIL (a<10 OR estoesunid>10)
+
+
+IF(c<10)							--/ IF SIMPLE /--
+PRINT "valor_c"
+PRINT c
+a:=5;
+
+PRINT "REPEAT_en_IF"
+REPEAT								--/ REPEAT ADENTRO DE IF /--
+a:=a+1;
+PRINT "valor_en_if_repeat"
+PRINT a
+UNTIL (a<10 OR estoesunid>10)
+
+ENDIF
+
+IF IF(c<=10)						--/ IF CON ELSE /--
+THEN
+PRINT "hola"
+ELSE
+PRINT "chau"
+ENDIF
+
+IF(c<10 AND q>20)					--/ IF con AND /--
+PRINT "CONDICION_AND"
+ENDIF
+
+[q,c,d]:=[100,200,300]				--/ ASIGNACION MULTIPLE /--
+PRINT "valor_q"
+PRINT q
+PRINT "valor_c"
+PRINT c
+PRINT "valor_d"
+PRINT d
+
+IF(cont>10.87 OR e<20.9)					--/ IF con OR /--
+PRINT "CONDICION_OR_VERDADERA"
+ENDIF
+
+IF IF(c<=101 AND e<20.1)				--/ IF CON ELSE Y CON AND/--
+THEN
+PRINT "IF_ELSE_AND_V"
+ELSE
+PRINT "IF_ELSE_AND_F"
+ENDIF
+
+IF IF(c<=102 OR e<20.2)					--/ IF CON ELSE Y CON OR/--
+THEN
+PRINT "IF_ELSE_OR_V"
+ELSE
+PRINT "IF_ELSE_OR_F"
+ENDIF
+
+
+IF IF(c<=101 AND e<20.1)				--/ IF CON REPEAT Y FILTER/--
+THEN
+PRINT "REPEAT_en_IF"
+REPEAT								--/ REPEAT ADENTRO DE IF CON REPEAT Y FILTER /--
+a:=a+1;
+PRINT "valor_en_if_repeat"
+PRINT a
+UNTIL (a<10 OR estoesunid>10)
+PRINT "IF_ELSE_AND_V"
+ELSE
+e:=1.3323;
+b:=3.4555;
+cont:=7.115;
+berta:=FILTER(_>3.0 AND _<=3.3 ,[e,b,cont]); 			--/ FILTER ADENTRO DE IF CON REPEAT Y FILTER /--
+PRINT "FIN_FILTER_ADENTRO_IF_ELSE"
+PRINT "IF_ELSE_AND_F"
+ENDIF
+
+READ a --/ READ ENTERO/--
+PRINT a
+READ e --/ READ REAL/--
+PRINT e
+
+PRINT "FIN"
+

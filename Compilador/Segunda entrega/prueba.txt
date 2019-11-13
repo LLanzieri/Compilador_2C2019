@@ -1,0 +1,49 @@
+VAR
+[INT,STRING,INT,FLOAT]:[aaa,berta]					--/Mas tipos de datos que variables/--
+[FLOAT,INT]:[b,var1]
+[INT]:[a]
+[INT,INT,FLOAT,FLOAT]:[c,d,e,cont]
+[INT,INT,FLOAT,FLOAT]:[c,d,e,cont]
+[STRING,INT]:[pepp,jdf,x,y,z]					--/Mas variables que tipos de datos/--
+[INT,INT,FLOAT,FLOAT]:[c,d,e,cont]				--/VARIABLES DUPLICADAS --/ COMENTARIO dentro de un comentario/--/--
+[INT]:[q]
+[FLOAT,INT]:[b,var1]
+[STRING]:[x]
+[INT]:[valorentero]
+ENDVAR
+
+pepp:=56;
+
+REPEAT
+	a:=a+1;
+	b:=12.3+11.5-3.8;
+	IF(a<var1)
+		cont :=37.5;
+	ENDIF
+UNTIL(a>3 OR b <5)
+
+[a,aaa,e]:=[10,20,5.5]									
+[a,aaa,e,a,a,a,a]:=[11,22,7.7]							
+
+IF IF(a>2)
+THEN
+x="hola";
+ELSE
+x="chau";
+ENDIF
+
+IF IF(a>2 AND q<=5)
+THEN
+x="hola AND";
+ELSE
+x="chau AND";
+ENDIF
+
+PRINT a
+READ b
+
+a:=FILTER(_>3 ,[a,var1,c,d]);
+a:=FILTER(NOT (_>7) ,[a,var1,c,d]);
+
+a:=FILTER( _> 3 AND _ <= 88 ,[a,var1,c,d]);
+a:=FILTER(_>7 OR _ == 3 ,[a,var1,c,d]);
